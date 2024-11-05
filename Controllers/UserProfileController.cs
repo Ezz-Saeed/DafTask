@@ -1,8 +1,10 @@
 ﻿using DafTask.Dtos;
 using DafTask.Models;
+using DafTask.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DafTask.Controllers
 {
@@ -12,11 +14,14 @@ namespace DafTask.Controllers
     {
         private readonly UserManager<UserProfile> userManager;
         private readonly SignInManager<UserProfile> signInManager;
+        private readonly IAuthenticationService authenticationService;
 
-        public UserProfileController(UserManager<UserProfile> userManager, SignInManager<UserProfile> signInManager)
+        public UserProfileController(UserManager<UserProfile> userManager, SignInManager<UserProfile> signInManager,
+            IAuthenticationService authenticationService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.authenticationService = authenticationService;
         }
 
         [HttpPost("login")]
@@ -38,6 +43,7 @@ namespace DafTask.Controllers
                     StatusCode = 401,
                     Message = "Unauthorized User",                     
                 });
+            var handler = new JwtSecurityTokenHandler();
             return new ResponseDto
             {
                 StatusCode = 200,
@@ -45,7 +51,7 @@ namespace DafTask.Controllers
                 Data = new AuthDto
                 {
                     Email = user.Email!,
-                    Toke = "Token"
+                    Toke = handler.WriteToken(authenticationService.CreateJwtToken(user))
                 }
             };
 
@@ -77,6 +83,7 @@ namespace DafTask.Controllers
                     StatusCode = 400,
                     Message = "Error occured while registering user!",
                 });
+            var handler = new JwtSecurityTokenHandler();
             return new ResponseDto
             {
                 StatusCode = 200,
@@ -84,7 +91,7 @@ namespace DafTask.Controllers
                 Data = new AuthDto
                 {
                     Email = newUser.Email,
-                    Toke = "Token"
+                    Toke = handler.WriteToken(authenticationService.CreateJwtToken(newUser))
                 }
             };
         }
