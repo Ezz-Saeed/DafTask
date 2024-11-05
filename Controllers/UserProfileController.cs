@@ -50,5 +50,43 @@ namespace DafTask.Controllers
             };
 
         }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<ResponseDto>> Register(RegisterDto registerDto)
+        {
+            var user = await userManager.FindByEmailAsync(registerDto.Email);
+            if (user is not null) 
+                return BadRequest(new ResponseDto
+                {
+                    StatusCode = 400,
+                    Message = "Registered email",
+                });
+
+            var newUser = new UserProfile
+            {
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                DateOfBirth = registerDto.DateOfBirth,
+                Email = registerDto.Email,
+                UserName = registerDto.Email,
+            };
+            var result = await userManager.CreateAsync(newUser,registerDto.Password);
+            if(!result.Succeeded)
+                return BadRequest(new ResponseDto
+                {
+                    StatusCode = 400,
+                    Message = "Error occured while registering user!",
+                });
+            return new ResponseDto
+            {
+                StatusCode = 200,
+                Message = "User successfully authorized",
+                Data = new AuthDto
+                {
+                    Email = newUser.Email,
+                    Toke = "Token"
+                }
+            };
+        }
     }
 }
