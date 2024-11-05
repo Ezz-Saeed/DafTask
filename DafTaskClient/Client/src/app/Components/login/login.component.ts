@@ -20,7 +20,7 @@ export class LoginComponent  {
       next:response=>{
         console.log(response)
         if(response.data.token){
-         localStorage.setItem('token', response.data.token)
+          sessionStorage.setItem('token', response.data.token)
         }
 
       },

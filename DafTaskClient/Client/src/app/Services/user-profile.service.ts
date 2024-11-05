@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IUserProfile } from '../Models/IUserProfile';
 import { Observable } from 'rxjs';
+import { IRegisterDto } from '../Models/IRegisterDto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,17 @@ export class UserProfileService {
     {email:email,password:password})
   }
 
+
+  register(dto:IRegisterDto){
+    return this.http.post<IUserProfile>(`${this.baseUrl}register`,dto)
+  }
+
   logout() {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
   }
 
   getToken() {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
   }
 
   isAuthenticated(): boolean {
