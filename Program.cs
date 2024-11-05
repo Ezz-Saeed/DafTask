@@ -1,12 +1,15 @@
 
 using DafTask.Data;
+using DafTask.Models;
+using DafTask.Seeding;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DafTask
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,10 @@ namespace DafTask
             {
                 options.UseSqlServer(connection);
             });
+            var identityBuilder = builder.Services.AddIdentity<UserProfile,  IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            
+            builder.Services.AddAuthentication();
+
 
             var app = builder.Build();
 
@@ -34,11 +41,28 @@ namespace DafTask
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
 
             app.MapControllers();
+
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            try
+            {
+                var userManager = services.GetRequiredService<UserManager<UserProfile>>();
+                var context = services.GetRequiredService<AppDbContext>();
+
+                await context.Database.MigrateAsync();
+                await UserProfileSeed.SeedUsersAsync(userManager, context);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
             app.Run();
         }

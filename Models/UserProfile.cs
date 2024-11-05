@@ -7,6 +7,6 @@ namespace DafTask.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public IEnumerable<Post>? Posts { get; set; }
+        public List<Post>? Posts { get; set; } = new List<Post>();
     }
 }

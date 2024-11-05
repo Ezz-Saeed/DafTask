@@ -10,6 +10,6 @@ namespace DafTask.Models
         public DateTime DatePosted { get; set; }
         [ForeignKey(nameof(Profile))]
         public string UserId { get; set; }
-        public UserProfile Profile { get; set; }
+        public UserProfile? Profile { get; set; }
     }
 }
