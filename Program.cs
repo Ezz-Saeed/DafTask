@@ -1,4 +1,7 @@
 
+using DafTask.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace DafTask
 {
     public class Program
@@ -13,6 +16,13 @@ namespace DafTask
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            var connection = builder.Configuration.GetConnectionString("connection") ?? 
+                throw new ArgumentNullException("Failed to connect db");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlServer(connection);
+            });
 
             var app = builder.Build();
 
