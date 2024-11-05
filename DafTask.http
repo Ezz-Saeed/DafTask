@@ -1,0 +1,6 @@
+@DafTask_HostAddress = http://localhost:5227
+
+GET {{DafTask_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
