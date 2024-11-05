@@ -32,7 +32,7 @@ namespace DafTask.Controllers
                 return Unauthorized(new ResponseDto
                 {
                     StatusCode = 401,
-                    Message = "Unauthorized User",
+                    Message = "Unauthorized User no such email",
                    
                 });
 
@@ -41,9 +41,11 @@ namespace DafTask.Controllers
                 return Unauthorized(new ResponseDto
                 {
                     StatusCode = 401,
-                    Message = "Unauthorized User",                     
+                    Message = "Unauthorized User ppppp",                     
                 });
             var handler = new JwtSecurityTokenHandler();
+            var token = handler.WriteToken(authenticationService.CreateJwtToken(user));
+            //Response.Cookies.Append("token", token);
             return new ResponseDto
             {
                 StatusCode = 200,
@@ -51,7 +53,11 @@ namespace DafTask.Controllers
                 Data = new AuthDto
                 {
                     Email = user.Email!,
-                    Toke = handler.WriteToken(authenticationService.CreateJwtToken(user))
+                    Token = token,
+                    UserName = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    DateOfBirth = user.DateOfBirth,
                 }
             };
 
@@ -91,7 +97,11 @@ namespace DafTask.Controllers
                 Data = new AuthDto
                 {
                     Email = newUser.Email,
-                    Toke = handler.WriteToken(authenticationService.CreateJwtToken(newUser))
+                    Token = handler.WriteToken(authenticationService.CreateJwtToken(newUser)),
+                    UserName = newUser.UserName,
+                    FirstName = newUser.FirstName,
+                    LastName = newUser.LastName,
+                    DateOfBirth=newUser.DateOfBirth,
                 }
             };
         }

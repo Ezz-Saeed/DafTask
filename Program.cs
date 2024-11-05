@@ -59,6 +59,17 @@ namespace DafTask
                 };
             }
             );
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("corsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
+                });
+                options.AddPolicy("loginPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/login");
+                });
+            });
 
 
             var app = builder.Build();
@@ -71,8 +82,10 @@ namespace DafTask
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("corsPolicy");
+            app.UseCors("loginPolicy");
             app.UseAuthentication();
-
+            
             app.UseAuthorization();
 
 
