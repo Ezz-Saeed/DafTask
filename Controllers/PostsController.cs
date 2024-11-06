@@ -103,5 +103,35 @@ namespace DafTask.Controllers
             await context.SaveChangesAsync();
             return addPostDto;
         }
+
+        [Authorize]
+        [HttpDelete("deletePost")]
+        public async Task<ActionResult<Post>> DeletePost(int id)
+        {
+            var userId = User.Claims.Single(u => u.Type == "uid");
+            var user = await userManager.FindByIdAsync(userId.Value);
+            if (user is null)
+            {
+                return Unauthorized(new ResponseDto
+                {
+                    StatusCode = 401,
+                    Message = $"Unauthorized user",
+                });
+            }
+
+            var post = await context.Posts.FindAsync(id);
+            if (post is null)
+            {
+                return BadRequest(new ResponseDto
+                {
+                    StatusCode = 400,
+                    Message = $"No such post",
+                });
+            }
+            context.Posts.Remove(post);
+            await context.SaveChangesAsync();
+            return post;
+            
+        }
     }
 }
