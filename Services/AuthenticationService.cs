@@ -1,4 +1,5 @@
-﻿using DafTask.Helpers;
+﻿using DafTask.Dtos;
+using DafTask.Helpers;
 using DafTask.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -30,6 +31,7 @@ namespace DafTask.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("uid",user.Id),
+                new Claim (JwtRegisteredClaimNames.Name, user.UserName),
             };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
@@ -44,6 +46,11 @@ namespace DafTask.Services
                     signingCredentials: signInCredentials
                 );
             return jwtSecurityToken;
+        }
+
+        public Task<ResponseDto> UpdateEmail(string email, string newEmail)
+        {
+            throw new NotImplementedException();
         }
     }
 }

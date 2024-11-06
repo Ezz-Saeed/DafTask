@@ -1,10 +1,12 @@
 ﻿using DafTask.Dtos;
 using DafTask.Models;
 using DafTask.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace DafTask.Controllers
 {
@@ -83,6 +85,7 @@ namespace DafTask.Controllers
                 UserName = registerDto.Email,
             };
             var result = await userManager.CreateAsync(newUser,registerDto.Password);
+   
             if(!result.Succeeded)
                 return BadRequest(new ResponseDto
                 {
@@ -105,5 +108,94 @@ namespace DafTask.Controllers
                 }
             };
         }
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<ActionResult<ResponseDto>> UpdateUserProfile(UpdateUserDto updateDto)
+        {
+            var id = User.Claims.Single(u=> u.Type=="uid");
+            var user = await userManager.FindByIdAsync(id.Value);
+            if (user is null)
+            {
+                return Unauthorized(new ResponseDto
+                {
+                    StatusCode = 401,
+                    Message = $"Unauthorized: No such email",
+                });
+            }
+
+            //var result = await signInManager.CheckPasswordSignInAsync(user, updateDto.Password, false);
+            //if (!result.Succeeded)
+            //{
+            //    return Unauthorized(new ResponseDto
+            //    {
+            //        StatusCode = 401,
+            //        Message = "Unauthorized: Invalid password",
+            //    });
+            //}
+
+            // Update email if different
+            if (!string.Equals(user.Email, updateDto.Email, StringComparison.OrdinalIgnoreCase))
+            {
+                user.Email = updateDto.Email;
+                user.UserName = updateDto.Email; // Ensure username is updated if using email as username
+                var emailUpdateResult = await userManager.UpdateAsync(user);
+                if (!emailUpdateResult.Succeeded)
+                {
+                    return BadRequest(new ResponseDto
+                    {
+                        StatusCode = 400,
+                        Message = $"Failed to update email: {string.Join(", ", emailUpdateResult.Errors.Select(e => e.Description))}"
+                    });
+                }
+            }
+
+            // Update password if provided and different from current
+            if (!string.IsNullOrEmpty(updateDto.Password))
+            {
+                var passwordUpdateResult = await userManager.ChangePasswordAsync(user, updateDto.Password, updateDto.Password);
+                if (!passwordUpdateResult.Succeeded)
+                {
+                    return BadRequest(new ResponseDto
+                    {
+                        StatusCode = 400,
+                        Message = $"Failed to update password: {string.Join(", ", passwordUpdateResult.Errors.Select(e => e.Description))}"
+                    });
+                }
+            }
+
+            // Update additional profile details
+            user.FirstName = updateDto.FirstName;
+            user.LastName = updateDto.LastName;
+            user.DateOfBirth = updateDto.DateOfBirth;
+
+            var updateResult = await userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return BadRequest(new ResponseDto
+                {
+                    StatusCode = 400,
+                    Message = $"Failed to update profile: {string.Join(", ", updateResult.Errors.Select(e => e.Description))}"
+                });
+            }
+
+            // Generate new token and response
+            var handler = new JwtSecurityTokenHandler();
+            return new ResponseDto
+            {
+                StatusCode = 200,
+                Message = "User successfully updated",
+                Data = new AuthDto
+                {
+                    Email = user.Email,
+                    Token = handler.WriteToken(authenticationService.CreateJwtToken(user)),
+                    UserName = user.UserName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    DateOfBirth = user.DateOfBirth,
+                }
+            };
+        }
+
     }
 }
+
