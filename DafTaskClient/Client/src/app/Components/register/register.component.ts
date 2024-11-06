@@ -14,6 +14,7 @@ export class RegisterComponent {
   constructor(private userProfileService:UserProfileService){}
 
   register(dto:IRegisterDto){
+    console.log(dto)
     this.userProfileService.register(dto).subscribe({
       next:response=>{
         sessionStorage.setItem('token', response.data.token);

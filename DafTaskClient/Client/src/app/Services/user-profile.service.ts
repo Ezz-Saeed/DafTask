@@ -27,6 +27,10 @@ export class UserProfileService {
     return this.http.put<IUserProfile>(`${this.baseUrl}update`,dto)
   }
 
+  deleteProfile(){
+    return this.http.delete<string>(`${this.baseUrl}delete`)
+  }
+
   logout() {
     sessionStorage.removeItem('token');
   }
