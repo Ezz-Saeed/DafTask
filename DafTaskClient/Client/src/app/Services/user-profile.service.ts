@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { IUserProfile } from '../Models/IUserProfile';
 import { Observable } from 'rxjs';
 import { IRegisterDto } from '../Models/IRegisterDto';
+import { UpdateProfileDto } from '../Models/UpdateProfileDto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class UserProfileService {
 
   register(dto:IRegisterDto){
     return this.http.post<IUserProfile>(`${this.baseUrl}register`,dto)
+  }
+
+  updateProfile(dto:UpdateProfileDto){
+    return this.http.put<IUserProfile>(`${this.baseUrl}update`,dto)
   }
 
   logout() {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UserProfileService } from '../../Services/user-profile.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,5 +10,11 @@ import { RouterModule } from '@angular/router';
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent {
+
+  constructor(private userProfileService:UserProfileService){}
+
+  logout(){
+    this.userProfileService.logout();
+  }
 
 }

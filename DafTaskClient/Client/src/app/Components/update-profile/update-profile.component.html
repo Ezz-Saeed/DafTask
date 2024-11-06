@@ -5,14 +5,19 @@
         <div class="card bg-dark text-white" style="border-radius: 1rem;">
           <div class="card-body p-5 text-center">
 
-            <div class="mb-md-5 mt-md-4 pb-5">
+            <form  [formGroup]="updateForm" (ngSubmit)="updateProfile()" class="mb-md-5 mt-md-4 pb-5">
 
-              <h2 class="fw-bold mb-2 text-uppercase">Sign Up</h2>
+              <h2 class="fw-bold mb-2 text-uppercase">Edit profile</h2>
               <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input #email type="text" id="typeEmailX" class="form-control form-control-lg" />
+                <input #email name="email" formControlName="email" type="text" id="typeEmailX" class="form-control form-control-lg" />
                 <label class="form-label" for="typeEmailX">Email</label>
+              </div>
+
+              <div data-mdb-input-init class="form-outline form-white mb-4">
+                <input #email name="newEmail" formControlName="newEmail" type="text" id="typeEmailX" class="form-control form-control-lg" />
+                <label class="form-label" for="typeEmailX">New Email</label>
               </div>
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
@@ -21,12 +26,12 @@
               </div>
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input #lName type="text" id="typePasswordX" class="form-control form-control-lg" />
+                <input #oldPass type="text" id="typePasswordX" class="form-control form-control-lg" />
                 <label class="form-label" for="typePasswordX">Old Password</label>
               </div>
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input #fName type="text" id="typePasswordX" class="form-control form-control-lg" />
+                <input name="firstName" formControlName="firstName" #fName type="text" id="typePasswordX" class="form-control form-control-lg" />
                 <label class="form-label" for="typePasswordX">First Name</label>
               </div>
 
@@ -37,7 +42,7 @@
               </div>
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input #dateOfBirth type="date" id="typePasswordX" class="form-control form-control-lg" />
+                <input formControlName="dateOfBirth" #dateOfBirth type="date" id="typePasswordX" class="form-control form-control-lg" />
                 <label class="form-label" for="typePasswordX">Date of Birth</label>
               </div>
 
@@ -45,7 +50,8 @@
 
               <button   data-mdb-button-init data-mdb-ripple-init
               class="btn btn-outline-light btn-lg px-5"
-               type="submit">Register</button>
+
+               type="submit">Save</button>
 
               <div class="d-flex justify-content-center text-center mt-4 pt-1">
                 <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
@@ -53,7 +59,7 @@
                 <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
               </div>
 
-            </div>
+            </form>
 
             <div>
               <p class="mb-0">Don't have an account? <a class="text-white-50 fw-bold">Sign Up</a>

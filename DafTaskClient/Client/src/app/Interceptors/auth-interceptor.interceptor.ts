@@ -9,13 +9,14 @@ export function AuthInterceptor (request: HttpRequest<any>, next: HttpHandlerFn)
     }
 
     if (token) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
+      const cloned = request.clone({
+        headers: request.headers.set('Authorization', `Bearer ${token}`)
       });
+      return next(cloned);
     }
 
     return next(request);
+
+    // return next(newRequest);
   }
 

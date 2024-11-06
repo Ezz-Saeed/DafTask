@@ -50,10 +50,10 @@ namespace DafTask.Services
 
         public async Task UpdateEmail(UserProfile user, UpdateUserDto updateDto)
         {
-            if (!string.Equals(user.Email, updateDto.Email, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrEmpty(updateDto.NewEmail))
             {
-                user.Email = updateDto.Email;
-                user.UserName = updateDto.Email; // Ensure username is updated if using email as username
+                user.Email = updateDto.NewEmail;
+                user.UserName = updateDto.NewEmail; // Ensure username is updated if using email as username
                 var emailUpdateResult = await _userManager.UpdateAsync(user);
                 
             }
