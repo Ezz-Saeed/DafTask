@@ -177,6 +177,37 @@ namespace DafTask.Controllers
             };
         }
 
+
+        [Authorize]
+        [HttpDelete("delete")]
+        public async Task<ActionResult<ResponseDto>> DeleteProfile()
+        {
+            var id = User.Claims.SingleOrDefault(u => u.Type == "uid");
+            var user = await userManager.FindByIdAsync(id!.Value);
+            if (user is null)
+            {
+                return Unauthorized(new ResponseDto
+                {
+                    StatusCode = 401,
+                    Message = $"Unauthorized user",
+                });
+            }
+
+            
+            var result = await userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                return Unauthorized(new ResponseDto
+                {
+                    StatusCode = 401,
+                    Message = $"Unauthorized user",
+                });
+            }
+
+            return Ok("Profile deleted");
+
+        }
+
     }
 }
 

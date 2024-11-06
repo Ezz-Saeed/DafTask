@@ -61,11 +61,12 @@ namespace DafTask.Services
 
         public async Task UpdatePassword(UserProfile user, UpdateUserDto updateUserDto)
         {
-            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            if (!string.IsNullOrEmpty(updateUserDto.Password) && !string.IsNullOrEmpty(updateUserDto.OldPassword))
             {
                 var passwordUpdateResult = await _userManager.ChangePasswordAsync(user, updateUserDto.OldPassword, 
                     updateUserDto.Password);
-               
+                await _userManager.UpdateAsync(user);
+
             }
         }
     }
