@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DafTask.Models
 {
@@ -10,6 +11,7 @@ namespace DafTask.Models
         public DateTime DatePosted { get; set; }
         [ForeignKey(nameof(Profile))]
         public string UserId { get; set; }
+        [JsonIgnore]
         public UserProfile? Profile { get; set; }
     }
 }
