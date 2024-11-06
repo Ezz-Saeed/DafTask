@@ -43,7 +43,7 @@ namespace DafTask.Controllers
                 return Unauthorized(new ResponseDto
                 {
                     StatusCode = 401,
-                    Message = "Unauthorized User ppppp",                     
+                    Message = "Unauthorized User",                     
                 });
             var handler = new JwtSecurityTokenHandler();
             var token = handler.WriteToken(authenticationService.CreateJwtToken(user));
@@ -123,6 +123,17 @@ namespace DafTask.Controllers
                     StatusCode = 401,
                     Message = $"Unauthorized: No such email",
                 });
+            }
+
+            if(updateDto.Password is not null && updateDto.OldPassword is not null)
+            {
+                var result = await signInManager.CheckPasswordSignInAsync(user, updateDto.OldPassword, false);
+                if (!result.Succeeded)
+                    return Unauthorized(new ResponseDto
+                    {
+                        StatusCode = 401,
+                        Message = "Unauthorized User: wrong password",
+                    });
             }
 
             // Update email if different
