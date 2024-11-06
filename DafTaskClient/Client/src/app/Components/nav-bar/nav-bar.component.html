@@ -9,8 +9,9 @@
         <a class="nav-link active" aria-current="page" routerLink="/register" >Register</a>
         <a class="nav-link" routerLink="/login">Login</a>
         <a class="nav-link" routerLink="/updateProfile">Edit Profile</a>
-        <a class="nav-link" style="cursor: pointer;" (click)="logout()">Logout</a>
-        <a class="nav-link" style="cursor: pointer;" routerLink="/deleteProfile" (click)="deleteProfile()">Delete Profile</a>
+        <a class="nav-link" style="cursor: pointer;" routerLink="/login" (click)="logout()">Logout</a>
+        <a class="nav-link" style="cursor: pointer;" routerLink="/login" (click)="deleteProfile()">Delete Profile</a>
+        <a class="nav-link" style="cursor: pointer;" routerLink="/posts" >Posts</a>
 
       </div>
     </div>

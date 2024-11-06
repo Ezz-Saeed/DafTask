@@ -4,6 +4,7 @@ import { UserProfileService } from './Services/user-profile.service';
 import { LoginComponent } from "./Components/login/login.component";
 import { HomeComponent } from './Components/home/home.component';
 import { NavBarComponent } from "./Components/nav-bar/nav-bar.component";
+import { PostsService } from './Services/posts.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { NavBarComponent } from "./Components/nav-bar/nav-bar.component";
 })
 export class AppComponent  implements OnInit{
   title = 'Client';
-  constructor(private userProfileService:UserProfileService){}
+  constructor(private userProfileService:UserProfileService, private postsService:PostsService){}
   ngOnInit(): void {
     // this.userProfileService.login("user@test.com","Ab$$1234").subscribe({
     //     next:response=>{
@@ -24,6 +25,11 @@ export class AppComponent  implements OnInit{
     //       console.log(err)
     //     }
     //   });
+    // this.postsService.getPosts().subscribe({
+    //   next:response=>{
+    //     console.log(response)
+    //   }
+    // })
   }
 
 }

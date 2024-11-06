@@ -1,0 +1,23 @@
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Content</th>
+      <th scope="col">Date Posted</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of posts">
+      <td >{{p.title}}</td>
+      <td>{{p.content}}</td>
+      <td>{{p.datePosted}}</td>
+      <td><i class="bi bi-pencil"></i></td>
+      <td><i class="fa fa-trash"></i></td>
+    </tr>
+
+  </tbody>
+</table>
+<button routerLink="/addPost" class="rounded-2 mt-3 p-1" >New Post</button>
+
