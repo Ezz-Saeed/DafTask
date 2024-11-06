@@ -108,6 +108,8 @@ namespace DafTask.Controllers
                 }
             };
         }
+
+
         [Authorize]
         [HttpPut("update")]
         public async Task<ActionResult<ResponseDto>> UpdateUserProfile(UpdateUserDto updateDto)
@@ -123,50 +125,19 @@ namespace DafTask.Controllers
                 });
             }
 
-            //var result = await signInManager.CheckPasswordSignInAsync(user, updateDto.Password, false);
-            //if (!result.Succeeded)
-            //{
-            //    return Unauthorized(new ResponseDto
-            //    {
-            //        StatusCode = 401,
-            //        Message = "Unauthorized: Invalid password",
-            //    });
-            //}
-
             // Update email if different
-            if (!string.Equals(user.Email, updateDto.Email, StringComparison.OrdinalIgnoreCase))
-            {
-                user.Email = updateDto.Email;
-                user.UserName = updateDto.Email; // Ensure username is updated if using email as username
-                var emailUpdateResult = await userManager.UpdateAsync(user);
-                if (!emailUpdateResult.Succeeded)
-                {
-                    return BadRequest(new ResponseDto
-                    {
-                        StatusCode = 400,
-                        Message = $"Failed to update email: {string.Join(", ", emailUpdateResult.Errors.Select(e => e.Description))}"
-                    });
-                }
-            }
+            await authenticationService.UpdateEmail(user, updateDto);
 
             // Update password if provided and different from current
-            if (!string.IsNullOrEmpty(updateDto.Password))
-            {
-                var passwordUpdateResult = await userManager.ChangePasswordAsync(user, updateDto.Password, updateDto.Password);
-                if (!passwordUpdateResult.Succeeded)
-                {
-                    return BadRequest(new ResponseDto
-                    {
-                        StatusCode = 400,
-                        Message = $"Failed to update password: {string.Join(", ", passwordUpdateResult.Errors.Select(e => e.Description))}"
-                    });
-                }
-            }
+            await authenticationService.UpdatePassword(user, updateDto);
 
             // Update additional profile details
-            user.FirstName = updateDto.FirstName;
-            user.LastName = updateDto.LastName;
-            user.DateOfBirth = updateDto.DateOfBirth;
+            if(!string.IsNullOrEmpty(updateDto.FirstName))
+                user.FirstName = updateDto.FirstName;
+            if (!string.IsNullOrEmpty(updateDto.LastName))
+                user.LastName = updateDto.LastName;
+            if(!(updateDto.DateOfBirth==DateTime.Now))
+                user.DateOfBirth = updateDto.DateOfBirth;
 
             var updateResult = await userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
@@ -177,7 +148,6 @@ namespace DafTask.Controllers
                     Message = $"Failed to update profile: {string.Join(", ", updateResult.Errors.Select(e => e.Description))}"
                 });
             }
-
             // Generate new token and response
             var handler = new JwtSecurityTokenHandler();
             return new ResponseDto

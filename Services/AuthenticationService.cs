@@ -48,9 +48,25 @@ namespace DafTask.Services
             return jwtSecurityToken;
         }
 
-        public Task<ResponseDto> UpdateEmail(string email, string newEmail)
+        public async Task UpdateEmail(UserProfile user, UpdateUserDto updateDto)
         {
-            throw new NotImplementedException();
+            if (!string.Equals(user.Email, updateDto.Email, StringComparison.OrdinalIgnoreCase))
+            {
+                user.Email = updateDto.Email;
+                user.UserName = updateDto.Email; // Ensure username is updated if using email as username
+                var emailUpdateResult = await _userManager.UpdateAsync(user);
+                
+            }
+        }
+
+        public async Task UpdatePassword(UserProfile user, UpdateUserDto updateUserDto)
+        {
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                var passwordUpdateResult = await _userManager.ChangePasswordAsync(user, updateUserDto.OldPassword, 
+                    updateUserDto.Password);
+               
+            }
         }
     }
 }

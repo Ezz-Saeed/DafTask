@@ -7,6 +7,7 @@ namespace DafTask.Services
     public interface IAuthenticationService
     {
         JwtSecurityToken CreateJwtToken(UserProfile userProfile);
-        Task<ResponseDto> UpdateEmail (string email, string newEmail);
+        Task UpdateEmail (UserProfile user, UpdateUserDto updateDto);
+        Task UpdatePassword(UserProfile user, UpdateUserDto updateUserDto);
     }
 }
