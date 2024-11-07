@@ -11,17 +11,17 @@
               <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input #email name="email" formControlName="email" type="text" id="typeEmailX" class="form-control form-control-lg" />
+                <input #email name="email" [value]="updateForm.get('email')" formControlName="email" type="text" id="typeEmailX" class="form-control form-control-lg" />
                 <label class="form-label" for="typeEmailX">Email</label>
               </div>
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input #email name="newEmail" formControlName="newEmail" type="text" id="typeEmailX" class="form-control form-control-lg" />
+                <input #email name="newEmail" formControlName="newEmail" type="email" id="typeEmailX" class="form-control form-control-lg" />
                 <label class="form-label" for="typeEmailX">New Email</label>
               </div>
 
               <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input formControlName="password" #pass type="text" id="typePasswordX" class="form-control form-control-lg" />
+                <input formControlName="password" #pass type="password" id="typePasswordX" class="form-control form-control-lg" />
                 <label class="form-label" for="typePasswordX">Password</label>
               </div>
 

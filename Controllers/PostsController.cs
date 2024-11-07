@@ -104,6 +104,15 @@ namespace DafTask.Controllers
             return addPostDto;
         }
 
+
+        [Authorize]
+        [HttpGet("getPost")]
+        public async Task<ActionResult<Post>> GetPost(int id)
+        {
+            var post = await context.Posts.FindAsync(id);
+            return post!;
+        }
+
         [Authorize]
         [HttpDelete("deletePost")]
         public async Task<ActionResult<Post>> DeletePost(int id)

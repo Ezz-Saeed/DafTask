@@ -6,6 +6,7 @@ import { RegisterComponent } from './Components/register/register.component';
 import { UpdateProfileComponent } from './Components/update-profile/update-profile.component';
 import { PostsComponent } from './Components/posts/posts.component';
 import { AddPostComponent } from './Components/add-post/add-post.component';
+import { EditPostComponent } from './Components/edit-post/edit-post.component';
 
 export const routes: Routes = [
   {path:'home', component:HomeComponent,canActivate:[authGuard]},
@@ -15,6 +16,7 @@ export const routes: Routes = [
   {path:'posts', component:PostsComponent,canActivate:[authGuard]},
   {path:'register', component:RegisterComponent},
   {path:'addPost', component:AddPostComponent,canActivate:[authGuard]},
+  {path:'editPost/:id', component:EditPostComponent,canActivate:[authGuard]},
   {path:'',component:LoginComponent},
 
 ];

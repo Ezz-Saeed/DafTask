@@ -14,12 +14,17 @@ export class PostsService {
     return this.http.get<IPostDto[]>(`${this.baseUrl}getPosts`)
   }
 
+  getSinglePost(id:number){
+    return this.http.get<IPostDto>(`${this.baseUrl}getPost?id=${id}`)
+  }
+
+
   addPost(dto:IPostDto){
     return this.http.post<IPostDto>(`${this.baseUrl}addPost`,dto)
   }
 
-  updatePost(dto:IPostDto){
-    return this.http.put<IPostDto>(`${this.baseUrl}updatePost`,dto)
+  updatePost(dto:IPostDto,id:number){
+    return this.http.put<IPostDto>(`${this.baseUrl}updatePost?id=${id}`,dto)
   }
 
   deletePost(id:number){

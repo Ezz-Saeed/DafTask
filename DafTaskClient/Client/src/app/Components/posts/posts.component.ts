@@ -30,15 +30,19 @@ export class PostsComponent implements OnInit {
     })
   }
 
-  // addPost(dto:IPostDto){
-  //   this.postsService.addPost(dto).subscribe({
-  //     next:response=>{
-  //       console.log(response)
-  //     },
-  //     error:err=>{
-  //       console.log(err)
-  //     }
-  //   })
-  // }
+
+  deletePost(id:number){
+    this.postsService.deletePost(id).subscribe({
+      next:response=>{
+        console.log(response)
+        this.posts = this.posts?.filter(p=>p.id!==id);
+      },
+      error:err=>{
+        console.log(err)
+      }
+    })
+  }
+
+  
 
 }

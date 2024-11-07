@@ -1,6 +1,7 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
+      <th scope="col">#</th>
       <th scope="col">Title</th>
       <th scope="col">Content</th>
       <th scope="col">Date Posted</th>
@@ -10,11 +11,12 @@
   </thead>
   <tbody>
     <tr *ngFor="let p of posts">
+      <td>{{p.id}}</td>
       <td >{{p.title}}</td>
       <td>{{p.content}}</td>
       <td>{{p.datePosted}}</td>
-      <td><i class="bi bi-pencil"></i></td>
-      <td><i class="fa fa-trash"></i></td>
+      <td><a [routerLink]="['/editPost',p.id]" class="text-decoration-none text-dark">Edit</a></td>
+      <td><a style="cursor: pointer;" (click)="deletePost(p.id!)" class="text-decoration-none text-dark">Delete</a></td>
     </tr>
 
   </tbody>

@@ -1,0 +1,35 @@
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+
+            <div class="mb-md-5 mt-md-4 pb-5">
+
+              <h2 class="fw-bold mb-2 text-uppercase">post</h2>
+
+              <div data-mdb-input-init class="form-outline form-white mb-4">
+                <input #title type="text" [value]="post.title"  class="form-control form-control-lg"/>
+                <label class="form-label" >Title</label>
+              </div>
+
+              <div data-mdb-input-init class="form-outline form-white mb-4">
+                <textarea #content [value]="post.content" id="" class="form-control form-control-lg"></textarea>
+                <label class="form-label" for="typeEmailX">Content</label>
+              </div>
+
+            </div>
+
+            <div>
+              <a routerLink="/posts"
+              (click)="updatePost({title:title.value,content:content.value})"
+              class="text-dark fw-bold btn bg-light">Save</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
